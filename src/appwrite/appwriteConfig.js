@@ -15,13 +15,13 @@ export class Service {
         this.bucket = new Storage(this.Client);
     }
 
-    async createPost({ title, slug, content, featuredImage, status, userId }) {
+    async createPost({ title, slug, content, image, status, userId }) {
         try {
             return await this.databases.createDocument(config.databaseId, config.collectionId, slug,
                 {
                     title,
                     content,
-                    featuredImage,
+                    image,
                     status,
                     userId,
                 })
@@ -74,7 +74,7 @@ export class Service {
         Query.equal("status", ["active"])
     ]) {
         try {
-            return await this.databases.getDocument(
+            return await this.databases.listDocuments(
                 config.databaseId,
                 config.collectionId,
                 query)
@@ -106,14 +106,17 @@ export class Service {
     }
 
     async getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
+
+        return this.bucket.getFileView(
             config.bucketId,
             fileId,
         )
     }
 
-
 }
+
+
+
 
 
 const service = new Service();

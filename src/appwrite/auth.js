@@ -17,9 +17,10 @@ export class AuthService {
     async createAccount({ email, password, name }) {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name)
+
             // redirect to login after sign up
             if (userAccount) {
-                return this.login(email, password);
+                return this.login({ email, password });
             }
             else {
                 return userAccount
@@ -27,6 +28,7 @@ export class AuthService {
         }
         catch (err) {
             console.error("error in creating new user ", err)
+
         }
     }
 
@@ -53,7 +55,7 @@ export class AuthService {
     //logout from session 
     async deleteSession() {
         try {
-             await this.account.deleteSessions();
+            await this.account.deleteSessions();
         } catch (error) {
             console.error("cannot delete session", error)
         }

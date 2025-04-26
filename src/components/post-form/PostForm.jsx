@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 
 
 const PostForm = ({ post }) => {
+
+
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
@@ -29,11 +31,12 @@ const PostForm = ({ post }) => {
             };
 
             fetchPreview();
-        },);
+        });
 
 
 
     const submit = async (data) => {
+
         //post exist
         if (post) {
 
@@ -42,6 +45,8 @@ const PostForm = ({ post }) => {
                 service.deleteFile(post.image)
             }
             const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
+            
+
             if (dbPost) navigate(`/post/${dbPost.$id}`)
         }
         else {
@@ -55,6 +60,8 @@ const PostForm = ({ post }) => {
                     ...data,
                     userId: userData.$id
                 })
+                console.log(dbPost);
+
                 if (dbPost) navigate(`/post/${dbPost.$id}`)
             }
         }
@@ -130,7 +137,7 @@ const PostForm = ({ post }) => {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full cursor-pointer">
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>

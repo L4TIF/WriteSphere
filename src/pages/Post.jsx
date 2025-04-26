@@ -15,7 +15,7 @@ export default function Post() {
     const userData = useSelector((state) => state.auth.userData);
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
-
+    
     const [previewImage, setPreviewImage] = useState(null);
 
     useEffect(() => {

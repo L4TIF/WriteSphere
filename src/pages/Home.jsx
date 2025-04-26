@@ -11,11 +11,9 @@ const Home = () => {
     useEffect(() => {
         setIsLoading(true)
         service.listAllPost().then((posts) => {
-            if (posts) {
-                setPosts(posts.documents)
-
+            if (posts) {  
+             setPosts(posts.documents)
             }
-
         }).finally(() => setIsLoading(false))
     }, [])
 

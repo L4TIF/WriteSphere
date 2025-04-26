@@ -17,9 +17,10 @@ export class Service {
 
     async createPost({ title, slug, content, image, status, userId }) {
         try {
-            return await this.databases.createDocument(config.databaseId, config.collectionId, slug,
+            return await this.databases.createDocument(config.databaseId, config.collectionId, ID.unique(),
                 {
                     title,
+                    slug,
                     content,
                     image,
                     status,
@@ -32,18 +33,20 @@ export class Service {
 
     }
 
-    async updatePost(slug, {
+    async updatePost(documentId, {
         title,
         content,
+        slug,
         featuredImage,
         status,
     }) {
         try {
-            return await this.databases.updateDocument(config.databaseId, config.collectionId, slug,
+            return await this.databases.updateDocument(config.databaseId, config.collectionId, documentId,
                 {
                     title,
                     content,
                     featuredImage,
+                    slug,
                     status,
                 })
 

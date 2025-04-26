@@ -36,6 +36,7 @@ const PostForm = ({ post }) => {
 
 
     const submit = async (data) => {
+        console.log(data);
 
         //post exist
         if (post) {
@@ -45,9 +46,9 @@ const PostForm = ({ post }) => {
                 service.deleteFile(post.image)
             }
             const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
-            
 
-            if (dbPost) navigate(`/post/${dbPost.$id}`)
+
+            if (dbPost) navigate(`/post/${dbPost.slug}`)
         }
         else {
             const file = await service.uploadFile(data.image[0])

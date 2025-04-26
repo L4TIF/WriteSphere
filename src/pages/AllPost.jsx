@@ -8,7 +8,7 @@ const AllPost = () => {
     useEffect(() => {
         service.listAllPost([]).then((res) => setPosts(res.documents))
     }, [])
-    if (posts.length <= 0) {
+    if (posts.length === 0) {
         return <div>no posts found create one</div>
     }
     return (

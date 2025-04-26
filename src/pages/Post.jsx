@@ -5,7 +5,7 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 
-//todo fix this post.jsx whenever its mounts
+
 
 export default function Post() {
     const [post, setPost] = useState(null);

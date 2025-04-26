@@ -106,11 +106,12 @@ export class Service {
     }
 
     async getFilePreview(fileId) {
+        if (fileId)
 
-        return this.bucket.getFileView(
-            config.bucketId,
-            fileId,
-        )
+            return this.bucket.getFileView(
+                config.bucketId,
+                fileId,
+            )
     }
 
 }

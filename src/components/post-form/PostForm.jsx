@@ -45,7 +45,7 @@ const PostForm = ({ post }) => {
                 service.deleteFile(post.image)
             }
             const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
-            
+
 
             if (dbPost) navigate(`/post/${dbPost.$id}`)
         }
@@ -60,7 +60,7 @@ const PostForm = ({ post }) => {
                     ...data,
                     userId: userData.$id
                 })
-                console.log(dbPost);
+                console.log(dbPost, data);
 
                 if (dbPost) navigate(`/post/${dbPost.$id}`)
             }

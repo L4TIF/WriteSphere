@@ -16,11 +16,14 @@ export class Service {
     }
 
     async createPost({ title, slug, content, image, status, userId }) {
+        console.log(title, slug, content, image, status, userId);
+
         try {
-            return await this.databases.createDocument(config.databaseId, config.collectionId, slug,
+            return await this.databases.createDocument(config.databaseId, config.collectionId, ID.unique(),
                 {
                     title,
                     content,
+                    slug,
                     image,
                     status,
                     userId,
@@ -72,7 +75,7 @@ export class Service {
 
     async listAllPost(query = [
         Query.equal("status", ["active"])
-    ]) {
+    ],) {
         try {
             return await this.databases.listDocuments(
                 config.databaseId,

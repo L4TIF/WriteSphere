@@ -54,7 +54,7 @@ const Header = () => {
                     }>{item.name}</button>
                   </li>) : null
               ))}
-              {isLoggedIn && (<li><Logoutbtn /></li>)}
+              {isLoggedIn && (<li className='py-2  px-3'><Logoutbtn /></li>)}
             </ul>
           </nav>
 

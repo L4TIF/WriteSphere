@@ -66,9 +66,9 @@ export class Service {
         }
     }
 
-    async getPost(slug, query = []) {
+    async getPost(docId, query = []) {
         try {
-            return await this.databases.getDocument(config.databaseId, config.collectionId, slug, query)
+            return await this.databases.getDocument(config.databaseId, config.collectionId, docId, query)
 
         } catch (error) {
             console.error('error fetching content', error)

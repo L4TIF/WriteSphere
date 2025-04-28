@@ -4,12 +4,15 @@ import service from "../appwrite/appwriteConfig";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import { useGetPostByIDQuery } from "../store/postApi";
 
 
 
 export default function Post() {
-    const [post, setPost] = useState(null);
     const { state } = useLocation();
+
+    const { data: post, error, isLoading } = useGetPostByIDQuery(state.postId);
+
     const navigate = useNavigate();
 
     const userData = useSelector((state) => state.auth.userData);
@@ -18,22 +21,13 @@ export default function Post() {
 
     const [previewImage, setPreviewImage] = useState(null);
 
-    useEffect(() => {
-        if (state) {
-            service.getPost(state?.postId).then((post) => {
 
-                if (post) setPost(post);
-                else navigate("/");
-            });
-        } else navigate("/");
 
-    }, [navigate]);
     useEffect(() => {
         const fetchPreview = async () => {
             const result = await service.getFilePreview(post?.image);
             setPreviewImage(result);
         };
-
         fetchPreview();
     },);
 
@@ -45,8 +39,10 @@ export default function Post() {
             }
         });
     };
+    if (error) navigate('/')
+    if (isLoading) return <Container>Loading...</Container>
 
-    return post ? (
+    return (
         <div className="py-8">
             <Container>
                 <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
@@ -77,5 +73,5 @@ export default function Post() {
                 </div>
             </Container>
         </div>
-    ) : null;
+    )
 }

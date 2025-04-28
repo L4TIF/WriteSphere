@@ -1,6 +1,7 @@
 import React from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
+import config from '../config/config'
 
 
 const RTE = ({ name, control, label, defaultValue = "" }) => {
@@ -14,7 +15,7 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
                 control={control}
                 render={({ field: { onChange } }) => (
                     <Editor
-
+                        apiKey={config.tinyMceKey}
                         initialValue={defaultValue}
                         init={{
                             height: 500,

@@ -16,7 +16,6 @@ export class Service {
     }
 
     async createPost({ title, slug, content, image, status, userId }) {
-        console.log(title, slug, content, image, status, userId);
 
         try {
             return await this.databases.createDocument(config.databaseId, config.collectionId, ID.unique(),
@@ -102,7 +101,7 @@ export class Service {
         }
     }
     async deleteFile(fileId) {
-        console.log(fileId);
+
 
         try {
             return await this.bucket.deleteFile(config.bucketId,

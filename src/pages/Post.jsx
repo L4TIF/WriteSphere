@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import service from "../appwrite/appwriteConfig";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
@@ -9,25 +9,25 @@ import { useSelector } from "react-redux";
 
 export default function Post() {
     const [post, setPost] = useState(null);
-    const { slug } = useParams();
+    const { state } = useLocation();
     const navigate = useNavigate();
 
     const userData = useSelector((state) => state.auth.userData);
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
-    
+
     const [previewImage, setPreviewImage] = useState(null);
 
     useEffect(() => {
-        if (slug) {
-            service.getPost(slug).then((post) => {
+        if (state) {
+            service.getPost(state?.postId).then((post) => {
 
                 if (post) setPost(post);
                 else navigate("/");
             });
         } else navigate("/");
 
-    }, [slug, navigate]);
+    }, [navigate]);
     useEffect(() => {
         const fetchPreview = async () => {
             const result = await service.getFilePreview(post?.image);
@@ -58,7 +58,7 @@ export default function Post() {
 
                     {isAuthor && (
                         <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
+                            <Link to={`/edit-post/${post.slug}`} state={state.postId}>
                                 <Button bgColor="bg-green-500" className="mr-3">
                                     Edit
                                 </Button>

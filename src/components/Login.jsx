@@ -20,7 +20,10 @@ const Login = () => {
                 const userData = await authService.getCurrentUser();
 
 
-                if (userData) dispatch(authLogin(userData))
+                if (userData) {
+                    dispatch(authLogin(userData))
+                    localStorage.setItem('isLoggedIn', true) //set logged in flag in local storage
+                }
                 navigate('/')
             }
 

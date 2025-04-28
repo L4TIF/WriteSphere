@@ -15,12 +15,14 @@ function SignupComponent() {
     const create = async (data) => {
         setError("")
         try {
-            
+
             const userData = await authService.createAccount(data)
-            
+
             if (userData) {
                 const userDataCurrent = await authService.getCurrentUser()
-                if (userDataCurrent) dispatch(login(userData));
+                if (userDataCurrent) {
+                     dispatch(login(userData)) 
+                };
                 navigate("/")
             }
         } catch (error) {

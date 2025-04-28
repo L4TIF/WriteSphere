@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import service from '../appwrite/appwriteConfig';
 
-const PostCard = ({ $id, title, image }) => {
-
+const PostCard = ({ $id, slug, title, image }) => {
 
     const [previewImage, setPreviewImage] = useState(null);
     useEffect(() => {
@@ -15,10 +14,12 @@ const PostCard = ({ $id, title, image }) => {
 
         fetchPreview();
     }, [image]);
-  
+
 
     return (
-        <Link to={`/post/${$id}`}>
+        <Link to={`/post/${slug}`} state={{ postId: $id }}
+
+        >
             <div className='w-full bg-gray-100 rounded-xl p-4'>
                 <div className='w-full justify-center mb-4'>
                     <img className='rounded-xl' src={previewImage && previewImage} alt={title} />
@@ -26,7 +27,7 @@ const PostCard = ({ $id, title, image }) => {
                 </div>
                 <h2 className='text-xl font-bold'>{title}</h2>
             </div>
-        </Link>
+        </Link >
     )
 }
 

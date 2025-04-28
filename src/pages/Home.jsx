@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import service from '../appwrite/appwriteConfig'
 import { Container, PostCard } from '../components'
-import { useSelector } from 'react-redux';
+import { useGetPostsQuery } from '../store/postApi';
+
+// refetch after updating / deleting and create api for getPost
 
 const Home = () => {
-    const [posts, setPosts] = useState([]);
-    const isLoggedIn = useSelector(state => state.auth.status)
-    const [isLoading, setIsLoading] = useState(false)
-    const userData = useSelector(state => state.auth.userData)
-    useEffect(() => {
-        setIsLoading(true)
-        service.listAllPost().then((posts) => {
-            if (posts) {  
-             setPosts(posts.documents)
-            }
-        }).finally(() => setIsLoading(false))
-    }, [])
+
+    const { data: posts, error, isLoading } = useGetPostsQuery();
+
+    if (error) return <Container>Error fetching post</Container>
 
     if (isLoading)
         return <Container>Loading...</Container>
 
-    if (isLoggedIn && posts.length === 0)
+    if (posts.length === 0)
         return <Container>No posts, create new posts.</Container>
-
-    if (!isLoggedIn)
-        return <Container>Login to read posts.</Container>
 
     return (
         <div className='w-full py-8'>

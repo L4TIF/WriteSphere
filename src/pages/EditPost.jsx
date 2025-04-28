@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Container, PostForm } from '../components'
 import service from '../appwrite/appwriteConfig'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const EditPost = () => {
     const [post, setPost] = useState(null);
-    const { slug } = useParams()
+    const { state: postId } = useLocation();
+
     const navigate = useNavigate()
     useEffect(() => {
-        if (slug) {
-            service.getPost(slug).then((post) => {
+        if (postId) {
+            service.getPost(postId).then((post) => {
                 if (post) setPost(post)
             })
         }
         else
             navigate(`/`)
-    }, [slug, navigate])
+    }, [navigate])
+    
     return post ? (
         <div className='py-8'>
             <Container>

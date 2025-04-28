@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import service from '../appwrite/appwriteConfig'
 import { Container, PostCard } from '../components'
+import { useGetPostsQuery } from '../store/postApi';
+import { Query } from 'appwrite';
+import { useSelector } from 'react-redux';
 
 
 const AllPost = () => {
-    const [posts, setPosts] = useState([])
-    useEffect(() => {
-        service.listAllPost([]).then((res) => {
-            setPosts(res.documents)
-        })
-    }, [])
-    if (posts.length === 0) {
-        return <div>no posts found create one</div>
-    }
+    const currentUserID = useSelector((state) => state.auth.userData.$id);
+
+    const { data: posts, error, isLoading } = useGetPostsQuery([
+        Query.or(
+            [
+                Query.equal("status", ["active"]),
+                Query.equal("userId", [currentUserID])
+            ]
+        )
+    ]);
+
+    if (error) return <Container>Error fetching post</Container>
+    if (isLoading)
+        return <Container>Loading...</Container>
+
+    if (posts.length === 0)
+        return <Container>No posts, create new posts.</Container>
     return (
         <div className='w-full py-8'>
             <Container>

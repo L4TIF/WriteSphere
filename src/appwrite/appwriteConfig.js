@@ -16,12 +16,15 @@ export class Service {
     }
 
     async createPost({ title, slug, content, image, status, userId }) {
+        console.log(title, slug, content, image, status, userId);
+
         try {
             return await this.databases.createDocument(config.databaseId, config.collectionId, ID.unique(),
                 {
                     title,
                     slug,
                     content,
+                    slug,
                     image,
                     status,
                     userId,
@@ -36,18 +39,18 @@ export class Service {
     async updatePost(documentId, {
         title,
         content,
-        slug,
-        featuredImage,
+        image,
         status,
+        slug,
     }) {
         try {
             return await this.databases.updateDocument(config.databaseId, config.collectionId, documentId,
                 {
                     title,
                     content,
-                    featuredImage,
-                    slug,
+                    image,
                     status,
+                    slug,
                 })
 
         } catch (error) {
@@ -75,7 +78,7 @@ export class Service {
 
     async listAllPost(query = [
         Query.equal("status", ["active"])
-    ]) {
+    ],) {
         try {
             return await this.databases.listDocuments(
                 config.databaseId,
@@ -99,6 +102,8 @@ export class Service {
         }
     }
     async deleteFile(fileId) {
+        console.log(fileId);
+
         try {
             return await this.bucket.deleteFile(config.bucketId,
                 fileId,

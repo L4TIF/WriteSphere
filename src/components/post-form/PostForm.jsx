@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 
 const PostForm = ({ post }) => {
 
-
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
@@ -20,7 +19,7 @@ const PostForm = ({ post }) => {
     })
 
     const navigate = useNavigate();
-    const userData = useSelector(state => state.auth.userData)
+    const userData = useSelector(state => state.auth.userData);
 
     const [previewImage, setPreviewImage] = useState(null);
     if (post)
@@ -29,27 +28,25 @@ const PostForm = ({ post }) => {
                 const result = await service.getFilePreview(post.image);
                 setPreviewImage(result);
             };
-
             fetchPreview();
         });
 
-
-
     const submit = async (data) => {
-        console.log(data);
 
-        //post exist
+        //updating post
         if (post) {
 
-            const file = data.image[0] ? service.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
             if (file) {
-                service.deleteFile(post.image)
+                console.log(file, post);
+                await service.deleteFile(post.image)
             }
             const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
 
+            if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
 
-            if (dbPost) navigate(`/post/${dbPost.slug}`)
         }
+        // creating post
         else {
             const file = await service.uploadFile(data.image[0])
 
@@ -61,9 +58,9 @@ const PostForm = ({ post }) => {
                     ...data,
                     userId: userData.$id
                 })
-                console.log(dbPost);
 
-                if (dbPost) navigate(`/post/${dbPost.$id}`)
+
+                if (dbPost) navigate(`/post/${dbPost.$id}`, { state: { postId: dbPost.$id } })
             }
         }
     }

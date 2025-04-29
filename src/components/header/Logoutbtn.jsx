@@ -11,6 +11,7 @@ const Logoutbtn = () => {
         authService.deleteSession()
             .then(() => {
                 dispatch(logout())
+                localStorage.removeItem("isLoggedIn");
                 navigate('/login')
             })
     }

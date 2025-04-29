@@ -12,13 +12,16 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.status)
+  const isLoggedIn = useSelector(state => state.auth.status) || JSON.parse(localStorage.getItem("isLoggedIn"));
   useEffect(() => {
     if (isLoggedIn)
       authService.getCurrentUser()
         .then((userData) => {
-          if (userData)
+          if (userData) {
+
             dispatch(login(userData))
+            localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+          }
           else
             dispatch(logout())
         }).catch((error) => (console.log(error)))

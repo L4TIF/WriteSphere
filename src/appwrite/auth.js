@@ -47,7 +47,7 @@ export class AuthService {
         try {
             return await this.account.get();
         } catch (error) {
-            console.error('Error getting user', error)
+            console.log('Error getting user', error)
         }
         return null
     }
@@ -60,7 +60,6 @@ export class AuthService {
             console.error("cannot delete session", error)
         }
     }
-
 }
 
 const authService = new AuthService();

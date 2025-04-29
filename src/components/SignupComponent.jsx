@@ -21,7 +21,7 @@ function SignupComponent() {
             if (userData) {
                 const userDataCurrent = await authService.getCurrentUser()
                 if (userDataCurrent) {
-                     dispatch(login(userData)) 
+                    dispatch(login(userData))
                 };
                 navigate("/")
             }
@@ -45,7 +45,7 @@ function SignupComponent() {
                         to="/login"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
                     >
-                        Log in
+                        Login
                     </Link>
                 </p>
                 {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
@@ -63,6 +63,7 @@ function SignupComponent() {
                             label="Email: "
                             placeholder="Enter your email"
                             type="email"
+                            autoComplete="new-email"
                             {...register("email", {
                                 required: true,
                                 validate: {
@@ -75,6 +76,7 @@ function SignupComponent() {
                             label="Password: "
                             type="password"
                             placeholder="Enter your password"
+                            autoComplete="new-password"
                             {...register("password", {
                                 required: true,
                             })}

@@ -18,11 +18,8 @@ const Login = () => {
 
             if (session) {
                 const userData = await authService.getCurrentUser();
-
-
                 if (userData) {
                     dispatch(authLogin(userData))
-                    localStorage.setItem('isLoggedIn', true) //set logged in flag in local storage
                 }
                 navigate('/')
             }
@@ -39,7 +36,7 @@ const Login = () => {
                 <h2 className='text-center text-2xl font-bold leading-tight'>Log in to your account</h2>
                 <p className='mt-2 text-center text-base text-black/60'>
                     Dont have an account&nbsp;
-                    <Link to="/signup" className="font-medium text-primary transition-all duration-200 hover:underline"> Sign up</Link>
+                    <Link to="/signup" className="font-medium text-primary transition-all duration-200 hover:underline"> Signup</Link>
                 </p>
                 {error && <p className=' text-center text-red-500'>{error}</p>}
                 <form className='mt-8' onSubmit={handleSubmit(login)}>
@@ -48,6 +45,7 @@ const Login = () => {
                             label="Email: "
                             placeholder="Enter your email"
                             type="email"
+                            autoComplete="current-email"
                             {
                             ...register("email", {
                                 required: true,
@@ -64,6 +62,7 @@ const Login = () => {
                             label="Password: "
                             placeholder="Enter your password"
                             type="password"
+                            autoComplete="current-password"
                             {...register("password", { required: true })}
                         />
                     </div>

@@ -12,19 +12,20 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-
-
+  const isLoggedIn = useSelector(state => state.auth.status)
   useEffect(() => {
-
-    authService.getCurrentUser()
-      .then((userData) => {
-        if (userData)
-          dispatch(login(userData))
-        else
-          dispatch(logout())
-      })
-      .finally(() => setLoading(false))
-  },)
+    if (isLoggedIn)
+      authService.getCurrentUser()
+        .then((userData) => {
+          if (userData)
+            dispatch(login(userData))
+          else
+            dispatch(logout())
+        }).catch((error) => (console.log(error)))
+        .finally(() => setLoading(false))
+    else
+      setLoading(false)
+  }, [isLoggedIn])
 
   if (loading) return null
   return (

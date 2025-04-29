@@ -4,14 +4,15 @@ import service from "../appwrite/appwriteConfig";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import { useGetPostByIDQuery } from "../store/postApi";
+import { useDeletePostMutation, useGetPostByIDQuery, useGetPostImageQuery } from "../store/postApi";
 
 
 
 export default function Post() {
     const { state } = useLocation();
 
-    const { data: post, error, isLoading } = useGetPostByIDQuery(state.postId);
+    const { data: post, error, isLoading } = useGetPostByIDQuery(state?.postId);
+    const [deletePost, deletePostStatus] = useDeletePostMutation();
 
     const navigate = useNavigate();
 
@@ -19,33 +20,20 @@ export default function Post() {
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
-    const [previewImage, setPreviewImage] = useState(null);
+    const { data: previewImage, ...previewImageStatus } = useGetPostImageQuery(post?.image)
 
+    const handledeletePost = async () => {
+        const { data: response } = await deletePost(post);
+        if (response) navigate('/')
+    }
 
-
-    useEffect(() => {
-        const fetchPreview = async () => {
-            const result = await service.getFilePreview(post?.image);
-            setPreviewImage(result);
-        };
-        fetchPreview();
-    },);
-
-    const deletePost = () => {
-        service.deletePost(post.$id).then((status) => {
-            if (status) {
-                service.deleteFile(post.image);
-                navigate("/");
-            }
-        });
-    };
     if (error) navigate('/')
-    if (isLoading) return <Container>Loading...</Container>
-
+    if (isLoading) return <Container>Post Loading...</Container>
     return (
         <div className="py-8">
             <Container>
                 <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+                    {previewImageStatus?.isLoading && <p>Image Loading...</p>}
                     <img
                         src={previewImage}
                         alt={post.title}
@@ -59,7 +47,7 @@ export default function Post() {
                                     Edit
                                 </Button>
                             </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
+                            <Button bgColor="bg-red-500" onClick={handledeletePost}>
                                 Delete
                             </Button>
                         </div>

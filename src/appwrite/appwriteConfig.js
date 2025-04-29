@@ -57,9 +57,9 @@ export class Service {
         }
     }
 
-    async deletePost(slug) {
+    async deletePost(dbId) {
         try {
-            return await this.databases.deleteDocument(config.databaseId, config.collectionId, slug)
+            return await this.databases.deleteDocument(config.databaseId, config.collectionId, dbId)
 
         } catch (error) {
             console.error('error deleting content', error)
@@ -68,7 +68,7 @@ export class Service {
 
     async getPost(docId, query = []) {
         try {
-            return await this.databases.getDocument(config.databaseId, config.collectionId, docId, query)
+                return await this.databases.getDocument(config.databaseId, config.collectionId, docId, query)
 
         } catch (error) {
             console.error('error fetching content', error)
@@ -101,7 +101,6 @@ export class Service {
         }
     }
     async deleteFile(fileId) {
-
 
         try {
             return await this.bucket.deleteFile(config.bucketId,

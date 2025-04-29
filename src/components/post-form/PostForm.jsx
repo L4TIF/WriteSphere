@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button, Input, Select, RTE } from '../index'
+import { Button, Input, Select, RTE, Container } from '../index'
 import service from '../../appwrite/appwriteConfig'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useCreateNewPostMutation, useGetPostImageQuery, useUpdatePostMutation } from '../../store/postApi'
 
 
 const PostForm = ({ post }) => {
@@ -17,51 +18,22 @@ const PostForm = ({ post }) => {
 
         }
     })
-
+    const [addPost, addPostState] = useCreateNewPostMutation(); //addpost hook
+    const [updatePost, updatePostState] = useUpdatePostMutation(); //updatePost hook
     const navigate = useNavigate();
     const userData = useSelector(state => state.auth.userData);
-
-    const [previewImage, setPreviewImage] = useState(null);
-    if (post)
-        useEffect(() => {
-            const fetchPreview = async () => {
-                const result = await service.getFilePreview(post.image);
-                setPreviewImage(result);
-            };
-            fetchPreview();
-        });
+    const { data: previewImage, ...previewImageStatus } = useGetPostImageQuery(post?.image)
 
     const submit = async (data) => {
-
         //updating post
         if (post) {
-
-            const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
-            if (file) {
-                console.log(file, post);
-                await service.deleteFile(post.image)
-            }
-            const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
-
+            const { data: dbPost } = await updatePost({ post, data })
             if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
-
         }
         // creating post
         else {
-            const file = await service.uploadFile(data.image[0])
-
-            if (file) {
-                const fileId = file.$id
-                data.image = fileId
-
-                const dbPost = await service.createPost({
-                    ...data,
-                    userId: userData.$id
-                })
-
-
-                if (dbPost) navigate(`/post/${dbPost.$id}`, { state: { postId: dbPost.$id } })
-            }
+            const { data: dbPost } = await addPost({ data, userId: userData.$id })
+            if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
         }
     }
 
@@ -92,6 +64,8 @@ const PostForm = ({ post }) => {
 
     }, [watch, slugTransform, setValue])
 
+    if (addPostState.isLoading || updatePostState.isLoading) return <Container>Adding Post...</Container>
+    if (addPostState.error || updatePostState.error) return <Container>something went wrong</Container>
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
@@ -122,6 +96,7 @@ const PostForm = ({ post }) => {
                 />
                 {post && (
                     <div className="w-full mb-4">
+                        {previewImageStatus?.isLoading && <p>Image Loading...</p>}
                         <img
                             src={previewImage}
                             alt={post.title}

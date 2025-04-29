@@ -64,7 +64,8 @@ const PostForm = ({ post }) => {
 
     }, [watch, slugTransform, setValue])
 
-    if (addPostState.isLoading || updatePostState.isLoading) return <Container>Adding Post...</Container>
+    if (addPostState.isLoading) return <Container>Adding Post...</Container>
+    if (updatePostState.isLoading) return <Container>Updating Post...</Container>
     if (addPostState.error || updatePostState.error) return <Container>something went wrong</Container>
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">

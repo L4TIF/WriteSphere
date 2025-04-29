@@ -7,6 +7,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const isLoggedIn = useSelector(state => state.auth.status);
+  const userData = useSelector(state => state.auth.userData);
+  console.log(userData);
+
   const navigate = useNavigate();
   const navItems = [
     {
@@ -38,13 +41,13 @@ const Header = () => {
     <>
       <header className='py-4 shadow bg-gray-100'>
         <Container>
-          <nav className='flex items-center'>
+          <nav className='md:flex  items-center'>
             <div className='mr-4 '>
               <Link to='/'>
-                <p className='text-3xl font-bold text-blue-600'>WriteSphere</p>
+                <p className='text-3xl text-center md:text-start font-bold text-blue-600'>WriteSphere</p>
               </Link>
             </div>
-            <ul className='flex ml-auto '>
+            <ul className='flex ml-auto justify-center items-center '>
               {navItems.map(item => (
                 item.active ?
                   (<li key={item.name}>
@@ -54,6 +57,8 @@ const Header = () => {
                     }>{item.name}</button>
                   </li>) : null
               ))}
+              {isLoggedIn && (<li className='py-2 text-green-700 px-3'>User: {userData.name.toUpperCase()}</li>)}
+
               {isLoggedIn && (<li className='py-2  px-3'><Logoutbtn /></li>)}
             </ul>
           </nav>

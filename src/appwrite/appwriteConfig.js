@@ -68,7 +68,7 @@ export class Service {
 
     async getPost(docId, query = []) {
         try {
-                return await this.databases.getDocument(config.databaseId, config.collectionId, docId, query)
+            return await this.databases.getDocument(config.databaseId, config.collectionId, docId, query)
 
         } catch (error) {
             console.error('error fetching content', error)
@@ -76,7 +76,15 @@ export class Service {
     }
 
     async listAllPost(query = [
-        Query.equal("status", ["active"])
+
+
+        Query.equal("status", ["active"]),
+
+        Query.orderDesc('$updatedAt'),
+        Query.orderDesc('$createdAt')
+
+
+
     ],) {
         try {
             return await this.databases.listDocuments(

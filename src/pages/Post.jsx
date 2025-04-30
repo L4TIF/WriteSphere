@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import service from "../appwrite/appwriteConfig";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import { useDeletePostMutation, useGetPostByIDQuery, useGetPostImageQuery } from "../store/postApi";
+import { useDeletePostMutation, useGetPostByIDQuery, useGetPostImageQuery, useGetPostsQuery } from "../store/postApi";
+import { Query } from "appwrite";
 
 
 
 export default function Post() {
     const { state } = useLocation();
+    const { slug } = useParams();
+    let { data: post, error, isLoading } = state ?
+        useGetPostByIDQuery(state?.postId)
+        :
+        useGetPostsQuery([  // fetch using param slug
+            Query.equal('slug', [slug])
+        ])
+    if (Array.isArray(post)) [post] = post; //destruct post obj if is array
 
-    const { data: post, error, isLoading } = useGetPostByIDQuery(state?.postId);
     const [deletePost, deletePostStatus] = useDeletePostMutation();
 
     const navigate = useNavigate();
@@ -42,7 +48,7 @@ export default function Post() {
 
                     {isAuthor && (
                         <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.slug}`} state={state.postId}>
+                            <Link to={`/edit-post/${post.slug}`} state={post.$id}>
                                 <Button bgColor="bg-green-500" className="mr-3">
                                     Edit
                                 </Button>

@@ -8,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const Header = () => {
   const isLoggedIn = useSelector(state => state.auth.status);
   const userData = useSelector(state => state.auth.userData);
-  console.log(userData);
 
   const navigate = useNavigate();
   const navItems = [

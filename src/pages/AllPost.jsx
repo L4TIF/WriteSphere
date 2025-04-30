@@ -10,12 +10,21 @@ const AllPost = () => {
     const currentUserID = useSelector((state) => state.auth.userData.$id);
 
     const { data: posts, error, isLoading } = useGetPostsQuery([
-        Query.or(
-            [
-                Query.equal("status", ["active"]),
-                Query.equal("userId", [currentUserID])
-            ]
-        )
+
+     
+            Query.orderDesc('$updatedAt'),
+            Query.orderDesc('$createdAt'),
+            Query.or(
+                [
+
+                    Query.equal("userId", [currentUserID]),
+                    Query.equal("status", ["active"]),
+                ]
+            ),
+
+     
+
+
     ]);
 
     if (error) return <Container>Error fetching post</Container>

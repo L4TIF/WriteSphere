@@ -46,6 +46,8 @@ export const postApi = createApi({
             providesTags: (result, error, id) => [{ type: "Posts", id }],
         }),
 
+
+
         // create new post
         createNewPost: builder.mutation({
             async queryFn(args) {

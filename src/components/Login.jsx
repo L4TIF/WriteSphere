@@ -14,8 +14,7 @@ const Login = () => {
     const login = async (data) => {
         setError('')
         try {
-            const session = await authService.login(data)
-
+            const session = await authService.login(data);
             if (session) {
                 const userData = await authService.getCurrentUser();
                 if (userData) {
@@ -67,10 +66,6 @@ const Login = () => {
                         />
                     </div>
                     <Button type="submit" className="mt-4 w-full">Login</Button>
-
-
-
-
                 </form>
             </div>
         </div>

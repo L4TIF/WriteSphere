@@ -27,8 +27,7 @@ export class AuthService {
             }
         }
         catch (err) {
-            console.error("error in creating new user ", err)
-
+            throw new Error(err.message);
         }
     }
 
@@ -37,7 +36,7 @@ export class AuthService {
         try {
             return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
-            console.error('login failed', error)
+            throw new Error(error.message);
         }
     }
 

@@ -8,10 +8,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Post, Protected, Signup } from './components/index.js'
 import LoginPage from './pages/LoginPage.jsx'
-import AllPost from './pages/AllPost.jsx'
 import AddPost from './pages/AddPost.jsx'
 import EditPost from './pages/EditPost.jsx'
 import Home from './pages/Home.jsx'
+import MyPost from './pages/MyPost.jsx'
 
 const router = createBrowserRouter([
   {
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/all-posts",
+        path: "/my-posts",
         element: (
           <Protected authentication>
             {/* {" "} */}
-            <AllPost />
+            <MyPost />
           </Protected>
         ),
       },

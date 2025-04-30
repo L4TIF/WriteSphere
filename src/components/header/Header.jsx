@@ -1,14 +1,14 @@
 import React from 'react'
 import { Container, Logoutbtn } from '../index'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 
 const Header = () => {
   const isLoggedIn = useSelector(state => state.auth.status);
   const userData = useSelector(state => state.auth.userData);
-
+  const location = useLocation();
   const navigate = useNavigate();
   const navItems = [
     {
@@ -26,8 +26,8 @@ const Header = () => {
       active: !isLoggedIn,
     },
     {
-      name: "All Posts",
-      slug: "/all-posts",
+      name: "My Posts",
+      slug: "/my-posts",
       active: isLoggedIn,
     },
     {
@@ -50,10 +50,14 @@ const Header = () => {
               {navItems.map(item => (
                 item.active ?
                   (<li key={item.name}>
-                    <button className={`py-2  px-3  cursor-pointer ${item.name === 'Sign up' && `font-semibold rounded-sm ml-2 bg-blue-600 text-white `}`} onClick={
-                      () =>
-                        navigate(item.slug)
-                    }>{item.name}</button>
+                    <button className={`py-2  px-3  cursor-pointer
+                      ${location.pathname === item.slug ? 'text-blue-600 font-semibold' : 'text-gray-500'}
+                     ${item.name === 'Sign up' && `font-semibold rounded-sm ml-2 bg-blue-600 text-white `}`}
+
+                      onClick={
+                        () =>
+                          navigate(item.slug)
+                      }>{item.name}</button>
                   </li>) : null
               ))}
               {isLoggedIn && (<li className='py-2 text-green-700 px-3'>User: {userData.name.toUpperCase()}</li>)}

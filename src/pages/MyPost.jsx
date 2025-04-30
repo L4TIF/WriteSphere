@@ -6,25 +6,13 @@ import { Query } from 'appwrite';
 import { useSelector } from 'react-redux';
 
 
-const AllPost = () => {
+const MyPost = () => {
     const currentUserID = useSelector((state) => state.auth.userData.$id);
 
     const { data: posts, error, isLoading } = useGetPostsQuery([
-
-     
-            Query.orderDesc('$updatedAt'),
-            Query.orderDesc('$createdAt'),
-            Query.or(
-                [
-
-                    Query.equal("userId", [currentUserID]),
-                    Query.equal("status", ["active"]),
-                ]
-            ),
-
-     
-
-
+        Query.equal("userId", [currentUserID]),
+        Query.orderDesc('$updatedAt'),
+        Query.orderDesc('$createdAt')
     ]);
 
     if (error) return <Container>Error fetching post</Container>
@@ -52,4 +40,4 @@ const AllPost = () => {
     )
 }
 
-export default AllPost
+export default MyPost

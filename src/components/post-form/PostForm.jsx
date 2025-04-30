@@ -68,8 +68,8 @@ const PostForm = ({ post }) => {
     if (updatePostState.isLoading) return <Container>Updating Post...</Container>
     if (addPostState.error || updatePostState.error) return <Container>something went wrong</Container>
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+        <form onSubmit={handleSubmit(submit)} className="md:flex flex-wrap w-full">
+            <div className="md:w-2/3 px-2 ">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -85,13 +85,13 @@ const PostForm = ({ post }) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                <RTE className="w-fit " label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="md:w-1/3 px-2">
                 <Input
                     label="Featured Image :"
                     type="file"
-                    className="mb-4"
+                    className="my-4 outline-1 rounded-md px-1 truncate md:w-full "
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
@@ -106,9 +106,10 @@ const PostForm = ({ post }) => {
                     </div>
                 )}
                 <Select
+
                     options={["active", "inactive"]}
-                    label="Status"
-                    className="mb-4"
+                    label="Status "
+                    className="mb-4 outline-1 rounded-md"
                     {...register("status", { required: true })}
                 />
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full cursor-pointer">

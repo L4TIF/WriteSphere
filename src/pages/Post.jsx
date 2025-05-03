@@ -38,12 +38,12 @@ export default function Post() {
     return (
         <div className="py-8">
             <Container>
-                <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+                <div className="w-full max-h-96 flex justify-center mb-4 relative border rounded-xl p-2">
                     {previewImageStatus?.isLoading && <p>Image Loading...</p>}
                     <img
                         src={previewImage}
                         alt={post.title}
-                        className="rounded-xl"
+                        className="rounded-xl w-full object-contain"
                     />
 
                     {isAuthor && (

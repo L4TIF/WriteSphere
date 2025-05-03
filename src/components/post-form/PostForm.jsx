@@ -5,6 +5,7 @@ import service from '../../appwrite/appwriteConfig'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useCreateNewPostMutation, useGetPostImageQuery, useUpdatePostMutation } from '../../store/postApi'
+import parseHTMLtoText from '../../utils/htmlParser'
 
 
 const PostForm = ({ post }) => {
@@ -25,6 +26,9 @@ const PostForm = ({ post }) => {
     const { data: previewImage, ...previewImageStatus } = useGetPostImageQuery(post?.image)
 
     const submit = async (data) => {
+        data.cardContent = parseHTMLtoText(data.content).replace(/\n/g, ' ').trim().slice(0, 50);
+        console.log(data.cardContent);
+
         //updating post
         if (post) {
             const { data: dbPost } = await updatePost({ post, data })

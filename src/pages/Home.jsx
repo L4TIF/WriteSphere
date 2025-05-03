@@ -7,7 +7,8 @@ import { useGetPostsQuery } from '../store/postApi';
 const Home = () => {
 
     const { data: posts, error, isLoading } = useGetPostsQuery();
-
+    console.log(posts);
+    
     if (error) return <Container>Error fetching post</Container>
 
     if (isLoading)
@@ -19,10 +20,10 @@ const Home = () => {
     return (
         <div className='w-full py-8'>
             <Container>
-                <div className='flex flex-wrap'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 '>
                     {
                         posts.map((post) => (
-                            <div key={post.$id} className='p-2 md:w-1/4'>
+                            <div key={post.$id} className='m-2  max-h-72 shadow-sm '>
                                 <PostCard {...post} />
                             </div>
                         ))

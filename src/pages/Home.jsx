@@ -7,7 +7,6 @@ import { useGetPostsQuery } from '../store/postApi';
 const Home = () => {
 
     const { data: posts, error, isLoading } = useGetPostsQuery();
-    console.log(posts);
     
     if (error) return <Container>Error fetching post</Container>
 

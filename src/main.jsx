@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { ThemeProvider } from './utils/ThemeContext'
 
 import { Post, Protected, Signup } from './components/index.js'
 import LoginPage from './pages/LoginPage.jsx'
@@ -72,10 +73,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
-
   </StrictMode>,
 )

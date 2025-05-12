@@ -1,1 +1,68 @@
 @import "tailwindcss";
+
+:root {
+    --background: #ffffff;
+    --text: #1a1a1a;
+    --primary: #3b82f6;
+    --secondary: #6b7280;
+    --accent: #8b5cf6;
+    --border: #e5e7eb;
+}
+
+[data-theme="dark"] {
+    --background: #1a1a1a;
+    --text: #ffffff;
+    --primary: #60a5fa;
+    --secondary: #9ca3af;
+    --accent: #a78bfa;
+    --border: #374151;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utility classes for theme colors */
+.bg-theme {
+    background-color: var(--background);
+}
+
+.text-theme {
+    color: var(--text);
+}
+
+.border-theme {
+    border-color: var(--border);
+}
+
+/* Dark mode classes */
+.dark .bg-theme {
+    background-color: var(--background);
+}
+
+.dark .text-theme {
+    color: var(--text);
+}
+
+.dark .border-theme {
+    border-color: var(--border);
+}
+
+/* Form elements in dark mode */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark textarea {
+    background-color: #1f2937;
+    color: #ffffff;
+    border-color: #4b5563;
+}
+
+.dark input[type="text"]::placeholder,
+.dark input[type="email"]::placeholder,
+.dark input[type="password"]::placeholder,
+.dark textarea::placeholder {
+    color: #9ca3af;
+}

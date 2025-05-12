@@ -15,9 +15,7 @@ function SignupComponent() {
     const create = async (data) => {
         setError("")
         try {
-
             const userData = await authService.createAccount(data)
-
             if (userData) {
                 const userDataCurrent = await authService.getCurrentUser()
                 if (userDataCurrent) {
@@ -32,14 +30,14 @@ function SignupComponent() {
 
     return (
         <div className="flex items-center justify-center">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+            <div className={`mx-auto w-full max-w-lg bg-theme rounded-xl p-10 border border-theme shadow-lg`}>
                 <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
                         {/* <Logo width="100%" /> */}
                     </span>
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
+                <h2 className="text-center text-2xl font-bold leading-tight text-theme">Sign up to create account</h2>
+                <p className="mt-2 text-center text-base text-theme/60">
                     Already have an account?&nbsp;
                     <Link
                         to="/login"
@@ -48,7 +46,7 @@ function SignupComponent() {
                         Login
                     </Link>
                 </p>
-                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+                {error && <p className="text-red-600 dark:text-red-400 mt-8 text-center">{error}</p>}
 
                 <form className='mt-8' onSubmit={handleSubmit(create)}>
                     <div className='space-y-5'>
@@ -87,7 +85,6 @@ function SignupComponent() {
                     </div>
                 </form>
             </div>
-
         </div>
     )
 }

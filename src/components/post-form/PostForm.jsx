@@ -7,73 +7,60 @@ import { useSelector } from 'react-redux'
 import { useCreateNewPostMutation, useGetPostImageQuery, useUpdatePostMutation } from '../../store/postApi'
 import parseHTMLtoText from '../../utils/htmlParser'
 
-
 const PostForm = ({ post }) => {
-
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
             slug: post?.slug || '',
             content: post?.content || '',
             status: post?.status || 'active'
-
         }
     })
-    const [addPost, addPostState] = useCreateNewPostMutation(); //addpost hook
-    const [updatePost, updatePostState] = useUpdatePostMutation(); //updatePost hook
+    const [addPost, addPostState] = useCreateNewPostMutation();
+    const [updatePost, updatePostState] = useUpdatePostMutation();
     const navigate = useNavigate();
     const userData = useSelector(state => state.auth.userData);
     const { data: previewImage, ...previewImageStatus } = useGetPostImageQuery(post?.image)
 
     const submit = async (data) => {
         data.cardContent = parseHTMLtoText(data.content).replace(/\n/g, ' ').trim().slice(0, 50);
-        console.log(data.cardContent);
 
-        //updating post
         if (post) {
             const { data: dbPost } = await updatePost({ post, data })
             if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
-        }
-        // creating post
-        else {
+        } else {
             const { data: dbPost } = await addPost({ data, userId: userData.$id })
             if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
         }
     }
 
     const slugTransform = useCallback((value) => {
-
         if (value && typeof value === 'string')
             return value
                 .trim()
                 .toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-                .replace(/\s+/g, '-') // Replace spaces with dashes
-                .replace(/^-+|-+$/g, ''); // Remove leading/trailing dashes
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/^-+|-+$/g, '');
         return ''
     }, [])
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (name === 'title') {
-                setValue('slug', slugTransform(value.title,
-                    { shouldValidate: true }))
+                setValue('slug', slugTransform(value.title, { shouldValidate: true }))
             }
         })
-
-
-        return () => {
-            subscription.unsubscribe()
-        }
-
+        return () => subscription.unsubscribe()
     }, [watch, slugTransform, setValue])
 
     if (addPostState.isLoading) return <Container>Adding Post...</Container>
     if (updatePostState.isLoading) return <Container>Updating Post...</Container>
-    if (addPostState.error || updatePostState.error) return <Container>something went wrong</Container>
+    if (addPostState.error || updatePostState.error) return <Container>Something went wrong</Container>
+
     return (
         <form onSubmit={handleSubmit(submit)} className="md:flex flex-wrap w-full">
-            <div className="md:w-2/3 px-2 ">
+            <div className="md:w-2/3 px-2">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -89,34 +76,62 @@ const PostForm = ({ post }) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                <RTE className="w-fit " label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                <RTE
+                    className="w-fit"
+                    label="Content :"
+                    name="content"
+                    control={control}
+                    defaultValue={getValues("content")}
+                />
             </div>
             <div className="md:w-1/3 px-2">
-                <Input
-                    label="Featured Image :"
-                    type="file"
-                    className="my-4 outline-1 rounded-md px-1 truncate md:w-full "
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
-                />
+                <div className="mb-4">
+                    <label className="block mb-1 pl-1 text-theme">Featured Image :</label>
+                    <input
+                        type="file"
+                        className="w-full px-3 py-2 rounded-lg
+                            bg-theme border border-theme
+                            text-theme file:mr-4 file:py-2 file:px-4
+                            file:rounded-lg file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-primary file:text-white
+                            hover:file:bg-primary/90
+                            cursor-pointer
+                            focus:outline-none focus:ring-2 focus:ring-primary
+                            transition-colors duration-200"
+                        accept="image/png, image/jpg, image/jpeg, image/gif"
+                        {...register("image", { required: !post })}
+                    />
+                </div>
                 {post && (
                     <div className="w-full mb-4">
-                        {previewImageStatus?.isLoading && <p>Image Loading...</p>}
+                        {previewImageStatus?.isLoading && <p className="text-theme">Image Loading...</p>}
                         <img
                             src={previewImage}
                             alt={post.title}
-                            className="rounded-lg"
+                            className="rounded-lg w-full h-auto"
                         />
                     </div>
                 )}
-                <Select
-
-                    options={["active", "inactive"]}
-                    label="Status "
-                    className="mb-4 outline-1 rounded-md"
-                    {...register("status", { required: true })}
-                />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full cursor-pointer">
+                <div className="mb-4">
+                    <label className="block mb-1 pl-1 text-theme">Status :</label>
+                    <select
+                        className="w-full px-3 py-2 rounded-lg
+                            bg-theme border border-theme
+                            text-theme
+                            focus:outline-none focus:ring-2 focus:ring-primary
+                            transition-colors duration-200"
+                        {...register("status", { required: true })}
+                    >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <Button
+                    type="submit"
+                    bgColor={post ? "bg-green-500 hover:bg-green-600" : "bg-blue-600 hover:bg-blue-700"}
+                    className="w-full"
+                >
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>

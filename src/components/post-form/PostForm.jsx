@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useCreateNewPostMutation, useGetPostImageQuery, useUpdatePostMutation } from '../../store/postApi'
 import parseHTMLtoText from '../../utils/htmlParser'
+import Loader from '../Loader'
 
 const PostForm = ({ post }) => {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -54,8 +55,12 @@ const PostForm = ({ post }) => {
         return () => subscription.unsubscribe()
     }, [watch, slugTransform, setValue])
 
-    if (addPostState.isLoading) return <Container>Adding Post...</Container>
-    if (updatePostState.isLoading) return <Container>Updating Post...</Container>
+    if (addPostState.isLoading || updatePostState.isLoading) return (
+        <div className="min-h-[60vh]">
+            <Loader size="lg" text={post ? "Updating post..." : "Creating post..."} />
+        </div>
+    )
+
     if (addPostState.error || updatePostState.error) return <Container>Something went wrong</Container>
 
     return (
@@ -105,12 +110,17 @@ const PostForm = ({ post }) => {
                 </div>
                 {post && (
                     <div className="w-full mb-4">
-                        {previewImageStatus?.isLoading && <p className="text-theme">Image Loading...</p>}
-                        <img
-                            src={previewImage}
-                            alt={post.title}
-                            className="rounded-lg w-full h-auto"
-                        />
+                        {previewImageStatus?.isLoading ? (
+                            <div className="relative h-48">
+                                <Loader size="md" text="Loading image..." />
+                            </div>
+                        ) : (
+                            <img
+                                src={previewImage}
+                                alt={post.title}
+                                className="rounded-lg w-full h-auto"
+                            />
+                        )}
                     </div>
                 )}
                 <div className="mb-4">

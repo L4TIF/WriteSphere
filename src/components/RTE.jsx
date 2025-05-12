@@ -62,17 +62,6 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
                 body.style.backgroundColor = theme === 'dark' ? '#1a1a1a' : '#ffffff';
                 body.style.color = theme === 'dark' ? '#ffffff' : '#000000';
             }
-
-            // Update editor theme using theme manager
-            try {
-                const themeManager = editor.theme;
-                if (themeManager) {
-                    themeManager.setSkin(theme === 'dark' ? 'oxide-dark' : 'oxide');
-                    themeManager.setContentCss(theme === 'dark' ? 'dark' : 'default');
-                }
-            } catch (error) {
-                console.log('Could not update theme settings');
-            }
         }
     }, [theme]);
 

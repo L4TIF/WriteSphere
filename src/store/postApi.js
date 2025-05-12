@@ -51,7 +51,7 @@ export const postApi = createApi({
         // create new post
         createNewPost: builder.mutation({
             async queryFn(args) {
-                const { data, userId } = args;
+                const { data, userId, authorName } = args;
                 try {
                     const file = await service.uploadFile(data.image[0]);
                     if (file) {
@@ -59,7 +59,8 @@ export const postApi = createApi({
                         data.image = fileId
                         const dbPost = await service.createPost({
                             ...data,
-                            userId
+                            userId,
+                            authorName
                         })
                         return { data: dbPost }
                     }
@@ -73,7 +74,7 @@ export const postApi = createApi({
         //update posts
         updatePost: builder.mutation({
             async queryFn(args) {
-                const { post, data } = args;
+                const { post, data, authorName } = args;
                 try {
 
                     const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
@@ -81,7 +82,7 @@ export const postApi = createApi({
                         console.log(file, post);
                         await service.deleteFile(post.image)
                     }
-                    const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined })
+                    const dbPost = await service.updatePost(post.$id, { ...data, image: file ? file.$id : undefined, authorName })
                     return { data: dbPost }
 
                 } catch (error) {

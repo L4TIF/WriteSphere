@@ -31,7 +31,9 @@ export default function Post() {
         const { data: response } = await deletePost(post);
         if (response) navigate('/')
     }
-
+    if (post) {
+        console.log(post)
+    }
     if (error) navigate('/')
     if (isLoading) return (
         <div className="py-8">
@@ -82,7 +84,10 @@ export default function Post() {
                     )}
                 </div>
                 <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-2xl font-bold">{post.title}</h1>
+                        <span className="text-theme/70">Author: {post.authorName ? post.authorName : 'Unknown'}</span>
+                    </div>
                 </div>
                 <div className="prose dark:prose-invert max-w-none [&>h1]:text-4xl [&>h1]:font-bold [&>h1]:mb-4 [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mb-3 [&>h3]:text-2xl [&>h3]:font-bold [&>h3]:mb-2 [&>p]:text-base [&>p]:mb-4 [&>ul]:list-disc [&>ul]:ml-6 [&>ul]:mb-4 [&>ol]:list-decimal [&>ol]:ml-6 [&>ol]:mb-4 [&>li]:mb-2 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:mb-4 [&>pre]:bg-gray-100 [&>pre]:dark:bg-gray-800 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:mb-4 [&>code]:bg-gray-100 [&>code]:dark:bg-gray-800 [&>code]:px-2 [&>code]:py-1 [&>code]:rounded [&>code]:text-sm [&>table]:w-full [&>table]:mb-4 [&>table]:border-collapse [&>th]:border [&>th]:border-gray-300 [&>th]:dark:border-gray-600 [&>th]:p-2 [&>td]:border [&>td]:border-gray-300 [&>td]:dark:border-gray-600 [&>td]:p-2">
                     {parse(post.content)}

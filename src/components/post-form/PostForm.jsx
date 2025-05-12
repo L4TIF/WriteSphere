@@ -27,10 +27,14 @@ const PostForm = ({ post }) => {
         data.cardContent = parseHTMLtoText(data.content).replace(/\n/g, ' ').trim().slice(0, 50);
 
         if (post) {
-            const { data: dbPost } = await updatePost({ post, data })
+            const { data: dbPost } = await updatePost({ post, data, authorName: userData.name })
             if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
         } else {
-            const { data: dbPost } = await addPost({ data, userId: userData.$id })
+            const { data: dbPost } = await addPost({
+                data,
+                userId: userData.$id,
+                authorName: userData.name
+            })
             if (dbPost) navigate(`/post/${dbPost.slug}`, { state: { postId: dbPost.$id } })
         }
     }

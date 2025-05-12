@@ -1,7 +1,8 @@
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import Container from "./container/Container"
-import Logoutbtn from "./header/Logoutbtn";
+
+import LogoutBtn from "./header/Logoutbtn";
 import Button from './Button';
 import Input from './Input';
 import Select from './Select';
@@ -18,11 +19,14 @@ import AddPost from '../pages/AddPost'
 import EditPost from '../pages/EditPost'
 import LoginPage from '../pages/LoginPage'
 import SignupComponent from "./SignupComponent";
+import Loader from "./Loader";
+
 export {
+    LogoutBtn,
     Header,
     Footer,
-    Logoutbtn,
     Container,
+
     PostCard,
     Select,
     Input,
@@ -33,5 +37,6 @@ export {
     Post,
     PostForm,
     Protected,
-    SignupComponent
+    SignupComponent,
+    Loader
 }

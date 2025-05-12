@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Logoutbtn } from '../index'
+import { Container, LogoutBtn } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../utils/ThemeContext'
@@ -116,7 +116,7 @@ const Header = () => {
               )}
               {isLoggedIn && (
                 <li className='py-2 px-3'>
-                  <Logoutbtn />
+                  <LogoutBtn />
                 </li>
               )}
               <li className='py-2 px-3'>
@@ -176,10 +176,14 @@ const Header = () => {
                         </li>
                       )
                     ))}
-                    {isLoggedIn && (
-                      <li className="text-center py-3 px-4">
-                        <Logoutbtn />
+                    {isLoggedIn && (<>
+                      <li className=' text-green-600 dark:text-green-400 text-center py-3 px-4'>
+                        User: {userData.name.toUpperCase()}
                       </li>
+                      <li className="text-center py-3 px-4">
+                        <LogoutBtn />
+                      </li>
+                    </>
                     )}
                     <li className="text-center">
                       <button

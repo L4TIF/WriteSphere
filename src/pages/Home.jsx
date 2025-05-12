@@ -1,7 +1,6 @@
 import React from 'react'
-import { Container, PostCard } from '../components'
+import { Container, PostCard, Loader } from '../components'
 import { useGetPostsQuery } from '../store/postApi';
-import Loader from '../components/Loader';
 
 // refetch after updating / deleting and create api for getPost
 
@@ -26,10 +25,10 @@ const Home = () => {
     return (
         <div className='w-full py-8'>
             <Container>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 '>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                     {
                         posts.map((post) => (
-                            <div key={post.$id} className='m-2 max-h-72 shadow-sm'>
+                            <div key={post.$id} className='h-full'>
                                 <PostCard {...post} />
                             </div>
                         ))
